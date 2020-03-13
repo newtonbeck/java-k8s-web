@@ -45,3 +45,45 @@ Execute a aplicação pelo seguinte comando:
 ```
 docker run -p 4567:4567 --link mysql:mysql -e "MY_BLOG_DB_URL=jdbc:mysql://mysql:3306/my_blog?useSSL=false" my-blog:latest
 ```
+
+## Publicando a imagem Docker do projeto
+
+Execute o comando abaixo alterando o `<usuario do docker hub>` pelo seu usuário do site [hub.docker.com][https://hub.docker.com] para criar uma imagem que será publicada.
+```
+docker build -t <usuario do docker hub>/my-blog:latest .
+```
+
+Execute o comando abaixo alterando o `<usuario do docker hub>` pelo seu usuário do site [hub.docker.com][https://hub.docker.com] para publicar a imagem criada.
+```
+docker push newtonbeck/my-blog:latest
+```
+
+## Executando o projeto no k8s
+
+Para iniciar o `minikube` execute:
+```
+minikube start
+```
+
+Para fazer o deploy da aplicação execute:
+```
+kubectl apply -f k8s/mysql-deployment.yml
+kubectl apply -f k8s/web-deployment.yml
+```
+
+Para verificar quais pods estão executando:
+```
+kubectl get pods
+```
+
+Para criar o banco de dados execute:
+```
+kubectl exec -it <pod do banco de dados> sh
+```
+
+Dentro do pod execute:
+```
+mysql -u root -p
+```
+
+Digite a senha do banco de dados `toor` e depois copie o conteúdo do arquivo `db/script.sql` e cole no terminal do pod de banco de dados.
